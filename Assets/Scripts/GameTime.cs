@@ -31,12 +31,12 @@ public class GameTime : MonoBehaviour
         // 获取所有 Friendly 标签对象
         try
         {
-        GameObject[] friendlies = GameObject.FindGameObjectsWithTag("Friendly");
-        allTargets.AddRange(friendlies);
+            GameObject[] friendlies = GameObject.FindGameObjectsWithTag("Friendly");
+            allTargets.AddRange(friendlies);
         }
         catch (System.Exception)
         {
-            
+
         }
 
         GameObject nextActor = null;
@@ -45,7 +45,7 @@ public class GameTime : MonoBehaviour
         foreach (GameObject obj in allTargets)
         {
             Capability capability = obj.GetComponent<Capability>();
-            if (capability != null && capability.nextActionTime< now)
+            if (capability != null && capability.nextActionTime < now)
             {
                 earliest = capability.nextActionTime;
                 nextActor = obj;
@@ -53,7 +53,7 @@ public class GameTime : MonoBehaviour
         }
         if (!players.Contains(nextActor))
         {
-            
+
         }
         now = earliest;
     }

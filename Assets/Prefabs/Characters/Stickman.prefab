@@ -98,7 +98,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemap: {fileID: 0}
-  position: {x: 0, y: 0, z: 0}
+  cellPosition: {x: 0, y: 0, z: 0}
   health: 100
-  speed: 1
+  reactionSpeed: 0
+  nextActionTime: 0
   smoothSpeed: 0.125

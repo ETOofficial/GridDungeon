@@ -6,6 +6,7 @@ using TMPro;
 using System.Collections.Generic;
 using System;
 using Unity.VisualScripting;
+using System.Collections;
 
 public class TileClickHandler : MonoBehaviour, IPointerClickHandler
 {
@@ -93,14 +94,22 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
             Debug.Log("无法到达");
             return;
         }
+        StartCoroutine(MoveAlongPath(path, capability)); // 启动协程
+    }
+
+    // 新增协程方法
+    IEnumerator MoveAlongPath(List<Tuple<int, int>> path, Capability capability)
+    {
         foreach (var p in path)
         {
-            gameTime.NPCAct(); // NPC 行动
+            gameTime.NPCAct();
             Debug.Log($"移动到：{p}");
             capability.cellPosition = new Vector3Int(p.Item1, p.Item2, 0);
+
+            yield return new WaitForSeconds(0.5f); // 等待1秒
         }
     }
-        
+
 
     // 将UI定位到世界坐标（转换为屏幕坐标）
     private void PositionPanelAtWorldPos(Vector2 worldPos)
