@@ -14,12 +14,15 @@ public class MapGen : MonoBehaviour
     [Header("引用")]
     public List<List<NBTTile>> map; // 生成的地图
     public Tilemap tilemap;         // 绑定的Tilemap组件
+
+    [Header("瓦片")]
     public TileBase groundTile;     // 空地瓦片
     public TileBase wallTile;       // 墙瓦片
+    public TileBase woodenBoxTile;
 
 
     public int[][] passMap;
-    public GameObject player;
+    private GameObject player;
 
     void Start()
     {
@@ -50,6 +53,7 @@ public class MapGen : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
+
                 // 生成边界墙
                 if (x == 0 || y == 0 || x == width - 1 || y == height - 1)
                 {
@@ -61,6 +65,19 @@ public class MapGen : MonoBehaviour
                             {"modable", false}
                         }
                     };
+                }
+                else if (Random.Range(0, 100) < 10)
+                {
+                    map[x][y] = new NBTTile()
+                    {
+                        tile = woodenBoxTile,
+                        nbt = new Dictionary<string, object>() 
+                        {
+                            {"passable", false},
+                        }
+                    };
+                    
+
                 }
                 else
                 {

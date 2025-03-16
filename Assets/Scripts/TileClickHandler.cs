@@ -88,8 +88,9 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
         Capability capability = FindObjectOfType<Capability>();
         Tuple<int, int> start = new(capability.cellPosition.x, capability.cellPosition.y);
         Tuple<int, int> end = new(cellPos.x, cellPos.y);
+        Debug.Log("正在寻路……");
         List<Tuple<int, int>> path = AStarPathfinding.AStar(mapGen.passMap, start, end);
-        if (path == new List<Tuple<int, int>>())
+        if (path == null || path.Count == 0)
         {
             Debug.Log("无法到达");
             return;
@@ -102,11 +103,12 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
     {
         foreach (var p in path)
         {
-            gameTime.NPCAct();
             Debug.Log($"移动到：{p}");
             capability.cellPosition = new Vector3Int(p.Item1, p.Item2, 0);
 
-            yield return new WaitForSeconds(0.5f); // 等待1秒
+            yield return new WaitForSeconds(0.5f); // 等待
+
+            gameTime.NPCAct();
         }
     }
 
