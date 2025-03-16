@@ -19,6 +19,7 @@ public class Capability : MonoBehaviour
     public float smoothSpeed = 0.125f; // 平滑移动速度
     void Start()
     {
+        gameTime = GameObject.Find("GameTime");
         Vector3 worldPos = tilemap.GetCellCenterWorld(cellPosition);
         transform.position = worldPos; // 更新位置
         nextActionTime = reactionSpeed;

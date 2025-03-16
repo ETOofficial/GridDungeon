@@ -22,17 +22,22 @@ public class GameTime : MonoBehaviour
         if (pause) return;
     }
 
-    public void Act()
+    public void NPCAct()
     {
+        List<GameObject> allTargets = new List<GameObject>();
         // 获取所有 Player 标签对象
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        // 获取所有 Friendly 标签对象
-        GameObject[] friendlies = GameObject.FindGameObjectsWithTag("Friendly");
-
-        // 合并两个数组（避免重复可改用 HashSet）
-        List<GameObject> allTargets = new List<GameObject>();
         allTargets.AddRange(players);
+        // 获取所有 Friendly 标签对象
+        try
+        {
+        GameObject[] friendlies = GameObject.FindGameObjectsWithTag("Friendly");
         allTargets.AddRange(friendlies);
+        }
+        catch (System.Exception)
+        {
+            
+        }
 
         GameObject nextActor = null;
         float earliest = 0f;

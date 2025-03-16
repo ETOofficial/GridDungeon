@@ -20,11 +20,11 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
     private GameObject currentPanel; // 当前显示的UI实例
     private Transform player; // 角色的Transform
     private MapGen mapGen;
-    private GameObject gameTime;
+    private GameTime gameTime;
 
     public void Start()
     {
-        gameTime = GameObject.FindGameObjectWithTag("GameTime");
+        gameTime = FindObjectOfType<GameTime>();
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -88,9 +88,15 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
         Tuple<int, int> start = new(capability.cellPosition.x, capability.cellPosition.y);
         Tuple<int, int> end = new(cellPos.x, cellPos.y);
         List<Tuple<int, int>> path = AStarPathfinding.AStar(mapGen.passMap, start, end);
+        if (path == new List<Tuple<int, int>>())
+        {
+            Debug.Log("无法到达");
+            return;
+        }
         foreach (var p in path)
         {
-            gameTime.GetComponent<GameTime>().Act(); // NPC 行动
+            gameTime.NPCAct(); // NPC 行动
+            Debug.Log($"移动到：{p}");
             capability.cellPosition = new Vector3Int(p.Item1, p.Item2, 0);
         }
     }
