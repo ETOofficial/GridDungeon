@@ -120,14 +120,4 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
         Vector2 screenPos = Camera.main.WorldToScreenPoint(worldPos);
         panelRect.position = screenPos + new Vector2(20, 20); // 添加偏移防止遮挡
     }
-
-    // // 添加触摸支持
-    // void Update()
-    // {
-    //     if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-    //     {
-    //         Vector2 touchPos = Input.GetTouch(0).position;
-    //         OnPointerClick(new PointerEventData(EventSystem.current) { position = touchPos });
-    //     }
-    // }
 }

@@ -307,12 +307,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 4089107616398870730, guid: 812129bf5bd9d2a4598f0eab98df4864, type: 3}
-  width: 9
-  height: 9
+  width: 50
+  height: 50
   tilemap: {fileID: 1989026952}
   groundTile: {fileID: 11400000, guid: 263b078e88d87ae4086a65354b7ea70b, type: 2}
   wallTile: {fileID: 11400000, guid: d139a6d5d4a0b1c4aaa6cad64be82ed6, type: 2}
-  player: {fileID: 0}
+  woodenBoxTile: {fileID: 11400000, guid: e2f7fe9bd9db41649bf91b46467f722e, type: 2}
 --- !u!1 &1989026951
 GameObject:
   m_ObjectHideFlags: 0
