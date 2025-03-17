@@ -118,7 +118,9 @@ public class MapGen : MonoBehaviour
 
     public void SpawnNPC()
     {
-        // GameObject npc = Instantiate();
+        GameObject npc = Instantiate(assetDatabaseLoader.LittleBJY);
+        Vector3Int spawnPos = new(4, 4);
+        npc.GetComponent<Capability>().cellPosition = spawnPos;
     }
 
     public int[][] GetPassMap(List<List<NBTTile>> map)
