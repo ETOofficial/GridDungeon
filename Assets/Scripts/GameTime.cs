@@ -3,15 +3,20 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using System.Linq;
+
+
 public class GameTime : MonoBehaviour
 {
     public bool pause;
-    private float now = 0f;
+    public List<GameObject> allCharacters = new();
+
+    private float now = 0f; // 游戏刻
 
     public float Now()
     {
         return now;
     }
+
     void Start()
     {
         pause = true;
@@ -22,39 +27,37 @@ public class GameTime : MonoBehaviour
         if (pause) return;
     }
 
+    /**行动基本设定：
+    * 1.指定要做的动作
+    * 2.计算所需时间
+    * 3.找到最先完成行动的目标，执行动作，并将当前游戏刻设定为完成时间，并继续循环
+    */
     public void NPCAct()
     {
-        List<GameObject> allTargets = new List<GameObject>();
-        // 获取所有 Player 标签对象
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        allTargets.AddRange(players);
-        // 获取所有 Friendly 标签对象
-        try
-        {
-            GameObject[] friendlies = GameObject.FindGameObjectsWithTag("Friendly");
-            allTargets.AddRange(friendlies);
-        }
-        catch (System.Exception)
-        {
-
-        }
-
         GameObject nextActor = null;
-        float earliest = 0f;
-        // 遍历处理每个对象
-        foreach (GameObject obj in allTargets)
+        var earliest = 0f;
+        // 重复直至玩家行动
+        while (true)
         {
-            Capability capability = obj.GetComponent<Capability>();
-            if (capability != null && capability.nextActionTime < now)
+            // 遍历处理每个对象
+            foreach (var obj in allCharacters)
             {
-                earliest = capability.nextActionTime;
-                nextActor = obj;
+                var nextActionTime = obj.GetComponent<Capability>().nextActionTime;
+                // 如果该对象下一次行动的时间早于当前最早行动时间，则更新最早行动时间和下一个对象
+                if (earliest == 0f || nextActionTime < earliest)
+                {
+                    earliest = nextActionTime;
+                    nextActor = obj;
+                }
             }
-        }
-        if (!players.Contains(nextActor))
-        {
 
+            if (nextActor.GetComponent<Capability>().attitude == Attitude.Player)
+            {
+                break;
+            }
+            // TODO 执行动作
+            now = earliest;
         }
-        now = earliest;
+        Debug.Log($"当前刻度： {now}");
     }
 }

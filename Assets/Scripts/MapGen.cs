@@ -7,28 +7,27 @@ using UnityEngine.Tilemaps;
 public class MapGen : MonoBehaviour
 {
     private GameObject playerPrefab;
+    public GameObject player;
 
     [Header("地图参数")] public int width; // 地图宽度
     public int height; // 地图高度
-
-    [Header("引用")] public List<List<NBTTile>> map; // 生成的地图
+    public List<List<NBTTile>> map; // 生成的地图
     public Tilemap tilemap; // 绑定的Tilemap组件
-
-    [Header("瓦片")] 
-
-
     public int[][] passMap;
-    public GameObject player;
+    
 
     private GameObject __camera;
     private AssetDatabaseLoader assetDatabaseLoader;
+    private GameTime gameTime;
 
-    void Start()
+    public void Start()
     {
+        // 引用
         assetDatabaseLoader = GameObject.Find("AssetDatabaseLoader").GetComponent<AssetDatabaseLoader>();
-
         __camera = GameObject.Find("Main Camera");
         playerPrefab = assetDatabaseLoader.Stickman;
+        gameTime = GameObject.Find("GameTime").GetComponent<GameTime>();
+        
         GenerateMap();
         SpawnPlayer();
         SpawnNPC();
@@ -108,7 +107,8 @@ public class MapGen : MonoBehaviour
     public void SpawnPlayer()
     {
         player = Instantiate(playerPrefab);
-        player.GetComponent<Capability>().attitude = "player";
+        gameTime.allCharacters.Add(player); // 将player添加到游戏时间管理器中
+        player.GetComponent<Capability>().attitude = Attitude.Player;
         Vector3Int spawnPos = new(2, 2);
         player.GetComponent<Capability>().cellPosition = spawnPos;
         __camera.transform.position = spawnPos + __camera.GetComponent<CameraMove>().offset;
@@ -116,7 +116,9 @@ public class MapGen : MonoBehaviour
 
     public void SpawnNPC()
     {
-        GameObject npc = Instantiate(assetDatabaseLoader.LittleBJY);
+        var npc = Instantiate(assetDatabaseLoader.LittleBJY);
+        gameTime.allCharacters.Add(npc);
+        npc.GetComponent<Capability>().attitude = Attitude.Hostile;
         Vector3Int spawnPos = new(4, 4);
         npc.GetComponent<Capability>().cellPosition = spawnPos;
     }
