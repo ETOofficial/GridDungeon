@@ -24,8 +24,11 @@ public class MapGen : MonoBehaviour
     public int[][] passMap;
     private GameObject player;
 
+    private GameObject __camera;
+
     void Start()
     {
+        __camera = GameObject.Find("Main Camera");
         GenerateMap();
         SpawnPlayer();
         passMap = GetPassMap(map);
@@ -103,8 +106,8 @@ public class MapGen : MonoBehaviour
         player = Instantiate(playerPrefab);
         player.tag = "Player"; // 添加标签
         Vector3Int spawnPos = new(2, 2);
-        Capability capability = FindObjectOfType<Capability>();
-        capability.cellPosition = spawnPos;
+        player.GetComponent<Capability>().cellPosition = spawnPos;
+        __camera.transform.position = spawnPos + __camera.GetComponent<CameraMove>().offset;
     }
 
     public int[][] GetPassMap(List<List<NBTTile>> map)

@@ -24,6 +24,7 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
     private GameTime gameTime;
     private bool isPathfinding = false;
 
+    // UI组件引用
     private TMP_Text coordText;
     private TMP_Text tileTypeText;
     private Button closeButton;

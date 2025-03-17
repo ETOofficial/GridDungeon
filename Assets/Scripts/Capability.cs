@@ -13,22 +13,25 @@ public class Capability : MonoBehaviour
     public float reactionSpeed; // 反应速度
 
     public float nextActionTime; // 下次行动的时间
-    private GameObject gameTime;
+    private GameTime gameTime;
 
     [Header("平滑移动")]
     public float smoothSpeed = 0.125f; // 平滑移动速度
+
+    
     void Start()
     {
-        gameTime = GameObject.Find("GameTime");
+        tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
+        gameTime = GameObject.Find("GameTime").GetComponent<GameTime>();
         Vector3 worldPos = tilemap.GetCellCenterWorld(cellPosition);
         transform.position = worldPos; // 更新位置
         nextActionTime = reactionSpeed;
+        
     }
     void FixedUpdate()
     {
-        tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
-        // // 获取当前所在的单元格坐标
-        // Vector3Int cellPosition = tilemap.WorldToCell(transform.position);
+        // // 动态坐标转换
+        // Vector3Int currentCell = tilemap.WorldToCell(transform.position);
         // 转换为该单元格中心的世界坐标
         Vector3 worldPos = tilemap.GetCellCenterWorld(cellPosition);
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, worldPos, smoothSpeed); // 平滑移动
@@ -36,7 +39,7 @@ public class Capability : MonoBehaviour
     }
     void Update()
     {
-        float now = gameTime.GetComponent<GameTime>().Now();
+        float now = gameTime.Now();
         if (now >= nextActionTime)
         {
             nextActionTime += reactionSpeed;
