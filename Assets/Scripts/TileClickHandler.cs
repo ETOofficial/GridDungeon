@@ -19,7 +19,7 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
 
 
     private GameObject currentPanel; // 当前显示的UI实例
-    private Transform player; // 角色的Transform
+    private GameObject player;
     private MapGen mapGen;
     private GameTime gameTime;
     private bool isPathfinding = false;
@@ -33,7 +33,7 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
 
     public void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform; // 通过标签查找玩家
+        player = FindObjectOfType<MapGen>().player;
         gameTime = FindObjectOfType<GameTime>();
     }
 
@@ -61,11 +61,11 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
             Debug.Log($"点击了格子：{cellPos}\n瓦片类型：{tilemap.GetTile(cellPos)?.name ?? "null"} {mapGen.passMap[cellPos.x][cellPos.y]}");
 
             // 调用其他逻辑（例如触发宝箱、战斗等）
-            ShowTileSelectUI(cellPos, clickWorldPos);
+            ShowTileSelectUI(cellPos);
         }
     }
 
-    private void ShowTileSelectUI(Vector3Int cellPos, Vector2 clickWorldPos)
+    private void ShowTileSelectUI(Vector3Int cellPos)
     {
         // 实例化UI预制体
         currentPanel = Instantiate(tileInfoPanelPrefab);
@@ -102,16 +102,15 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
             isPathfinding = false;
             return;
         }
-        player.GetComponent<Capability>().SetNextActionTime(1f);
+        player.GetComponent<Capability>().SetNextActionTime(1f); // 设置下一次行动时间，也就是本次行动结束时间
         isPathfinding = true;
         pathfindingButtonText.text = "停止寻路";
-        
-        Capability capability = FindObjectOfType<Capability>();
+        var capability = player.GetComponent<Capability>();
         Tuple<int, int> start = new(capability.cellPosition.x, capability.cellPosition.y);
         Tuple<int, int> end = new(cellPos.x, cellPos.y);
-        Debug.Log("正在寻路……");
-        List<Tuple<int, int>> path = AStarPathfinding.AStar(mapGen.passMap, start, end);
-        if (path == null || path.Count == 0)
+        Debug.Log($"正在寻路：从 {start} 到 {end}");
+        var path = AStarPathfinding.AStar(mapGen.passMap, start, end);
+        if (path.Count == 0)
         {
             Debug.Log("无法到达");
             return;

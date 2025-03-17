@@ -18,19 +18,17 @@ public class MapGen : MonoBehaviour
 
 
     public int[][] passMap;
-    private GameObject player;
+    public GameObject player;
 
     private GameObject __camera;
     private AssetDatabaseLoader assetDatabaseLoader;
-    
-    private 
 
     void Start()
     {
         assetDatabaseLoader = GameObject.Find("AssetDatabaseLoader").GetComponent<AssetDatabaseLoader>();
 
         __camera = GameObject.Find("Main Camera");
-        playerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Characters/Stickman.prefab");
+        playerPrefab = assetDatabaseLoader.Stickman;
         GenerateMap();
         SpawnPlayer();
         SpawnNPC();
@@ -110,7 +108,7 @@ public class MapGen : MonoBehaviour
     public void SpawnPlayer()
     {
         player = Instantiate(playerPrefab);
-        player.tag = "Player"; // 添加标签
+        player.GetComponent<Capability>().attitude = "player";
         Vector3Int spawnPos = new(2, 2);
         player.GetComponent<Capability>().cellPosition = spawnPos;
         __camera.transform.position = spawnPos + __camera.GetComponent<CameraMove>().offset;

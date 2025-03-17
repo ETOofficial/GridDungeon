@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,7 @@ public class Capability : MonoBehaviour
     // public Grid Grid;
     public Tilemap tilemap;
     public Vector3Int cellPosition;
-    [Header("人物属性")]
+    [Header("人物属性")] public String attitude; // 态度（中立、敌对、友好、玩家等）
     public float health;
     public float reactionSpeed; // 反应速度
 
