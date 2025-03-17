@@ -14,21 +14,20 @@ public class MapGen : MonoBehaviour
     [Header("引用")] public List<List<NBTTile>> map; // 生成的地图
     public Tilemap tilemap; // 绑定的Tilemap组件
 
-    [Header("瓦片")] private TileBase groundTile; // 空地瓦片
-    private TileBase wallTile; // 墙瓦片
-    private TileBase woodenBoxTile;
+    [Header("瓦片")] 
 
 
     public int[][] passMap;
     private GameObject player;
 
     private GameObject __camera;
+    private AssetDatabaseLoader assetDatabaseLoader;
+    
+    private 
 
     void Start()
     {
-        groundTile = AssetDatabase.LoadAssetAtPath<TileBase>("Assets/Textures/TileMap/Ground RT.asset"); // 空地瓦片
-        wallTile = AssetDatabase.LoadAssetAtPath<TileBase>("Assets/Textures/TileMap/Wall RT.asset"); // 墙瓦片
-        woodenBoxTile = AssetDatabase.LoadAssetAtPath<TileBase>("Assets/Textures/TileMap/Wooden Box RT.asset");
+        assetDatabaseLoader = GameObject.Find("AssetDatabaseLoader").GetComponent<AssetDatabaseLoader>();
 
         __camera = GameObject.Find("Main Camera");
         playerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Characters/Stickman.prefab");
@@ -68,7 +67,7 @@ public class MapGen : MonoBehaviour
                 {
                     map[x][y] = new NBTTile()
                     {
-                        tile = wallTile,
+                        tile = assetDatabaseLoader.wallTile,
                         nbt = new Dictionary<string, object>()
                         {
                             { "passable", false },
@@ -80,7 +79,7 @@ public class MapGen : MonoBehaviour
                 {
                     map[x][y] = new NBTTile()
                     {
-                        tile = woodenBoxTile,
+                        tile = assetDatabaseLoader.woodenBoxTile,
                         nbt = new Dictionary<string, object>()
                         {
                             { "passable", false },
@@ -89,7 +88,7 @@ public class MapGen : MonoBehaviour
                 }
                 else
                 {
-                    map[x][y] = new NBTTile() { tile = groundTile };
+                    map[x][y] = new NBTTile() { tile = assetDatabaseLoader.groundTile };
                 }
             }
         }
