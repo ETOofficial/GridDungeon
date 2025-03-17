@@ -1,24 +1,22 @@
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.Tilemaps;
 
 public class MapGen : MonoBehaviour
 {
-    [Header("角色")]
-    public GameObject playerPrefab;
+    private GameObject playerPrefab;
 
-    [Header("地图参数")]
-    public int width;          // 地图宽度
-    public int height;         // 地图高度
+    [Header("地图参数")] public int width; // 地图宽度
+    public int height; // 地图高度
 
-    [Header("引用")]
-    public List<List<NBTTile>> map; // 生成的地图
-    public Tilemap tilemap;         // 绑定的Tilemap组件
+    [Header("引用")] public List<List<NBTTile>> map; // 生成的地图
+    public Tilemap tilemap; // 绑定的Tilemap组件
 
-    [Header("瓦片")]
-    public TileBase groundTile;     // 空地瓦片
-    public TileBase wallTile;       // 墙瓦片
-    public TileBase woodenBoxTile;
+    [Header("瓦片")] private TileBase groundTile; // 空地瓦片
+    private TileBase wallTile; // 墙瓦片
+    private TileBase woodenBoxTile;
 
 
     public int[][] passMap;
@@ -28,10 +26,17 @@ public class MapGen : MonoBehaviour
 
     void Start()
     {
+        groundTile = AssetDatabase.LoadAssetAtPath<TileBase>("Assets/Textures/TileMap/Ground RT.asset"); // 空地瓦片
+        wallTile = AssetDatabase.LoadAssetAtPath<TileBase>("Assets/Textures/TileMap/Wall RT.asset"); // 墙瓦片
+        woodenBoxTile = AssetDatabase.LoadAssetAtPath<TileBase>("Assets/Textures/TileMap/Wooden Box RT.asset");
+
         __camera = GameObject.Find("Main Camera");
+        playerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Characters/Stickman.prefab");
         GenerateMap();
         SpawnPlayer();
+        SpawnNPC();
         passMap = GetPassMap(map);
+        // TODO passMap逻辑需要更新
     }
 
     public void GenerateMap()
@@ -48,24 +53,26 @@ public class MapGen : MonoBehaviour
             {
                 row.Add(new NBTTile());
             }
+
             map.Add(row);
         }
+
         // 生成地图
         Debug.Log("正在生成地图……");
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-
                 // 生成边界墙
                 if (x == 0 || y == 0 || x == width - 1 || y == height - 1)
                 {
                     map[x][y] = new NBTTile()
                     {
                         tile = wallTile,
-                        nbt = new Dictionary<string, object>() {
-                            {"passable", false},
-                            {"modable", false}
+                        nbt = new Dictionary<string, object>()
+                        {
+                            { "passable", false },
+                            { "modable", false }
                         }
                     };
                 }
@@ -74,13 +81,11 @@ public class MapGen : MonoBehaviour
                     map[x][y] = new NBTTile()
                     {
                         tile = woodenBoxTile,
-                        nbt = new Dictionary<string, object>() 
+                        nbt = new Dictionary<string, object>()
                         {
-                            {"passable", false},
+                            { "passable", false },
                         }
                     };
-                    
-
                 }
                 else
                 {
@@ -88,6 +93,7 @@ public class MapGen : MonoBehaviour
                 }
             }
         }
+
         // 绘制地图
         Debug.Log("正在绘制地图……");
         for (int x = 0; x < width; x++)
@@ -98,6 +104,7 @@ public class MapGen : MonoBehaviour
                 tilemap.SetTile(tilePos, map[x][y].tile);
             }
         }
+
         Debug.Log("地图生成完毕！");
     }
 
@@ -108,6 +115,11 @@ public class MapGen : MonoBehaviour
         Vector3Int spawnPos = new(2, 2);
         player.GetComponent<Capability>().cellPosition = spawnPos;
         __camera.transform.position = spawnPos + __camera.GetComponent<CameraMove>().offset;
+    }
+
+    public void SpawnNPC()
+    {
+        // GameObject npc = Instantiate();
     }
 
     public int[][] GetPassMap(List<List<NBTTile>> map)
@@ -128,6 +140,7 @@ public class MapGen : MonoBehaviour
                 }
             }
         }
+
         return passMap;
     }
 }

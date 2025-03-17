@@ -92,9 +92,6 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
         // 设置按钮事件
         closeButton.onClick.AddListener(() => Destroy(currentPanel));
         pathfindingButton.onClick.AddListener(() => Goto());
-
-        // // 将UI定位到点击位置（可选）
-        // PositionPanelAtWorldPos(clickWorldPos);
     }
 
 
@@ -146,14 +143,5 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
         }
         isPathfinding = false;
         pathfindingButtonText.text = "前往";
-    }
-
-
-    // 将UI定位到世界坐标（转换为屏幕坐标）
-    private void PositionPanelAtWorldPos(Vector2 worldPos)
-    {
-        RectTransform panelRect = currentPanel.GetComponent<RectTransform>();
-        Vector2 screenPos = Camera.main.WorldToScreenPoint(worldPos);
-        panelRect.position = screenPos + new Vector2(20, 20); // 添加偏移防止遮挡
     }
 }
