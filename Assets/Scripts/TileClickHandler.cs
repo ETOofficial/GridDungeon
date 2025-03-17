@@ -33,6 +33,7 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
 
     public void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player").transform; // 通过标签查找玩家
         gameTime = FindObjectOfType<GameTime>();
     }
 
@@ -104,9 +105,10 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
             isPathfinding = false;
             return;
         }
+        player.GetComponent<Capability>().SetNextActionTime(1f);
         isPathfinding = true;
         pathfindingButtonText.text = "停止寻路";
-        player = GameObject.FindGameObjectWithTag("Player").transform; // 通过标签查找玩家
+        
         Capability capability = FindObjectOfType<Capability>();
         Tuple<int, int> start = new(capability.cellPosition.x, capability.cellPosition.y);
         Tuple<int, int> end = new(cellPos.x, cellPos.y);

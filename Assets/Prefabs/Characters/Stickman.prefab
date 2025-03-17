@@ -100,6 +100,6 @@ MonoBehaviour:
   tilemap: {fileID: 0}
   cellPosition: {x: 0, y: 0, z: 0}
   health: 100
-  reactionSpeed: 0
+  reactionSpeed: 1
   nextActionTime: 0
   smoothSpeed: 0.125

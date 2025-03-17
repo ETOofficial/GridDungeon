@@ -45,7 +45,7 @@ public class CameraMove : MonoBehaviour
 
                 case TouchPhase.Moved:
                     Vector2 delta = touch.position - touchStartPos;
-                    MoveCamera(new Vector3(-delta.x, -delta.y, 0) * dragSpeed * Time.deltaTime);
+                    MoveCamera(dragSpeed * Time.deltaTime * new Vector3(-delta.x, -delta.y, 0));
                     touchStartPos = touch.position;
                     break;
 

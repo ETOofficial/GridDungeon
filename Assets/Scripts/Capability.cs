@@ -30,8 +30,6 @@ public class Capability : MonoBehaviour
     }
     void FixedUpdate()
     {
-        // // 动态坐标转换
-        // Vector3Int currentCell = tilemap.WorldToCell(transform.position);
         // 转换为该单元格中心的世界坐标
         Vector3 worldPos = tilemap.GetCellCenterWorld(cellPosition);
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, worldPos, smoothSpeed); // 平滑移动
@@ -39,10 +37,12 @@ public class Capability : MonoBehaviour
     }
     void Update()
     {
-        float now = gameTime.Now();
-        if (now >= nextActionTime)
-        {
-            nextActionTime += reactionSpeed;
-        }
+
+    }
+
+    public void SetNextActionTime(float standardCostTime)
+    {
+        float costTime = standardCostTime / reactionSpeed;
+        nextActionTime = gameTime.Now() + costTime;
     }
 }
