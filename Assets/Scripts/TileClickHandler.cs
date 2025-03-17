@@ -22,6 +22,13 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
     private Transform player; // 角色的Transform
     private MapGen mapGen;
     private GameTime gameTime;
+    private bool isPathfinding = false;
+
+    private TMP_Text coordText;
+    private TMP_Text tileTypeText;
+    private Button closeButton;
+    private Button pathfindingButton;
+    private TMP_Text pathfindingButtonText;
 
     public void Start()
     {
@@ -65,10 +72,16 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
         currentPanel.transform.SetParent(FindObjectOfType<Canvas>().transform, false);
 
         // 获取UI组件引用
-        TMP_Text coordText = currentPanel.transform.Find("CoordText").GetComponent<TMP_Text>();
-        TMP_Text tileTypeText = currentPanel.transform.Find("TileTypeText").GetComponent<TMP_Text>();
-        Button closeButton = currentPanel.transform.Find("CloseButton").GetComponent<Button>();
-        Button pathfindingButton = currentPanel.transform.Find("PathfindingButton").GetComponent<Button>();
+        coordText = currentPanel.transform.Find("CoordText").GetComponent<TMP_Text>();
+        tileTypeText = currentPanel.transform.Find("TileTypeText").GetComponent<TMP_Text>();
+        closeButton = currentPanel.transform.Find("CloseButton").GetComponent<Button>();
+        pathfindingButton = currentPanel.transform.Find("PathfindingButton").GetComponent<Button>();
+        pathfindingButtonText = pathfindingButton.GetComponentInChildren<TMP_Text>();
+
+        if (isPathfinding)
+        {
+            pathfindingButtonText.text = "停止寻路";
+        }
 
         // 设置UI内容
         coordText.text = $"坐标：{cellPos}";
@@ -82,8 +95,16 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
         // PositionPanelAtWorldPos(clickWorldPos);
     }
 
+
     public void Goto()
     {
+        if (isPathfinding)
+        {
+            isPathfinding = false;
+            return;
+        }
+        isPathfinding = true;
+        pathfindingButtonText.text = "停止寻路";
         player = GameObject.FindGameObjectWithTag("Player").transform; // 通过标签查找玩家
         Capability capability = FindObjectOfType<Capability>();
         Tuple<int, int> start = new(capability.cellPosition.x, capability.cellPosition.y);
@@ -96,6 +117,8 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
             return;
         }
         StartCoroutine(MoveAlongPath(path, capability)); // 启动协程
+        Debug.Log("寻路结束");
+        
     }
 
     // 新增协程方法
@@ -103,13 +126,23 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
     {
         foreach (var p in path)
         {
-            Debug.Log($"移动到：{p}");
-            capability.cellPosition = new Vector3Int(p.Item1, p.Item2, 0);
+            if (isPathfinding)
+            {
+                Debug.Log($"移动到：{p}");
+                capability.cellPosition = new Vector3Int(p.Item1, p.Item2, 0);
 
-            yield return new WaitForSeconds(0.5f); // 等待
+                yield return new WaitForSeconds(0.5f); // 等待
 
-            gameTime.NPCAct();
+                gameTime.NPCAct();
+            }
+            else
+            {
+                Debug.Log("寻路中止");
+            }
+            
         }
+        isPathfinding = false;
+        pathfindingButtonText.text = "前往";
     }
 
 
