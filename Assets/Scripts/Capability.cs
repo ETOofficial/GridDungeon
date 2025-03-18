@@ -40,7 +40,7 @@ public class Capability : MonoBehaviour
     public void SetNextActionTime(float standardCostTime)
     {
         var costTime = standardCostTime / reactionSpeed;
-        nextActionTime = gameTime.Now() + costTime;
+        nextActionTime = gameTime.now + costTime;
     }
 
     // public void AIAct()

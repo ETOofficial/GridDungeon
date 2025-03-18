@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using System.Linq;
 
@@ -10,12 +9,8 @@ public class GameTime : MonoBehaviour
     public bool pause;
     public List<GameObject> allCharacters = new();
 
-    private float now = 0f; // 游戏刻
-
-    public float Now()
-    {
-        return now;
-    }
+    public float now = 0f; // 游戏刻
+    
 
     void Start()
     {
