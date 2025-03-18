@@ -27,11 +27,12 @@ public class GameTime : MonoBehaviour
         if (pause) return;
     }
 
-    /**行动基本设定：
-    * 1.指定要做的动作
-    * 2.计算所需时间
-    * 3.找到最先完成行动的目标，执行动作，并将当前游戏刻设定为完成时间，并继续循环
-    */
+    /**
+     * 行动基本设定：
+     * 1.指定要做的动作
+     * 2.计算所需时间
+     * 3.找到最先完成行动的目标，执行动作，并将当前游戏刻设定为完成时间，并继续循环
+     */
     public void NPCAct()
     {
         GameObject nextActor = null;

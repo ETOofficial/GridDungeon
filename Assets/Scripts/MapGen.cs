@@ -111,6 +111,7 @@ public class MapGen : MonoBehaviour
         player.GetComponent<Capability>().attitude = Attitude.Player;
         var spawnPos = RandomCellPos();
         player.GetComponent<Capability>().cellPosition = spawnPos;
+        passMap[spawnPos.x][spawnPos.y] = 1;
         __camera.transform.position = tilemap.GetCellCenterWorld(spawnPos) + __camera.GetComponent<CameraMove>().offset;
         // __camera.GetComponent<CameraMove>().MoveTo(tilemap.GetCellCenterWorld(spawnPos));
     }
@@ -120,7 +121,8 @@ public class MapGen : MonoBehaviour
         var npc = Instantiate(assetDatabaseLoader.LittleBJY);
         gameTime.allCharacters.Add(npc);
         npc.GetComponent<Capability>().attitude = Attitude.Hostile;
-        Vector3Int spawnPos = new(4, 4);
+        var spawnPos = RandomCellPos();
+        passMap[spawnPos.x][spawnPos.y] = 1;
         npc.GetComponent<Capability>().cellPosition = spawnPos;
     }
 

@@ -119,15 +119,16 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
         Debug.Log("寻路结束");
         
     }
-
-    // 新增协程方法
-    IEnumerator MoveAlongPath(List<Tuple<int, int>> path, Capability capability)
+    
+    public IEnumerator MoveAlongPath(List<Tuple<int, int>> path, Capability capability)
     {
         foreach (var p in path)
         {
             if (isPathfinding)
             {
                 Debug.Log($"移动到：{p}");
+                mapGen.passMap[p.Item1][p.Item2] = 1;
+                mapGen.passMap[capability.cellPosition.x][capability.cellPosition.y] = 0;
                 capability.cellPosition = new Vector3Int(p.Item1, p.Item2, 0);
 
                 yield return new WaitForSeconds(0.5f); // 等待
