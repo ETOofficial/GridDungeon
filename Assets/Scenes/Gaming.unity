@@ -167,6 +167,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 476db2c7bda145f49956716ed3b6aa45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LittleBJY: {fileID: 0}
+  Stickman: {fileID: 0}
   groundTile: {fileID: 0}
   wallTile: {fileID: 0}
   woodenBoxTile: {fileID: 0}
@@ -354,8 +356,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73405ba77cec4f44281cfa2d3e655a6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 50
-  height: 50
+  player: {fileID: 0}
+  width: 10
+  height: 10
   tilemap: {fileID: 1989026952}
 --- !u!1 &1989026951
 GameObject:
@@ -576,6 +579,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pause: 0
+  allCharacters: []
 --- !u!1 &2115657085
 GameObject:
   m_ObjectHideFlags: 0

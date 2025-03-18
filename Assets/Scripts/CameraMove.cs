@@ -14,19 +14,20 @@ public class CameraMove : MonoBehaviour
     {
         player = FindObjectOfType<MapGen>().player; // 通过标签查找玩家
         if (player == null) return;
-        Vector3 desiredPosition = player.transform.position + offset; // 计算目标位置
+        var desiredPosition = player.transform.position + offset; // 计算目标位置
         transform.position = desiredPosition;
     }
 
-    void Update()
+    public void Update()
     {
         HandleTouchInput();
+        // transform.position.z = offset.z;
     }
 
     public void MoveTo(Vector3 targetPos)
     {
-        Vector3 desiredPosition = targetPos + offset; // 计算目标位置
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed); // 平滑移动
+        var desiredPosition = targetPos + offset; // 计算目标位置
+        var smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed); // 平滑移动
         transform.position = smoothedPosition; // 更新摄像头位置
     }
 
@@ -34,7 +35,7 @@ public class CameraMove : MonoBehaviour
     {
         if (Input.touchCount == 1)
         {
-            Touch touch = Input.GetTouch(0);
+            var touch = Input.GetTouch(0);
 
             switch (touch.phase)
             {
@@ -44,7 +45,7 @@ public class CameraMove : MonoBehaviour
                     break;
 
                 case TouchPhase.Moved:
-                    Vector2 delta = touch.position - touchStartPos;
+                    var delta = touch.position - touchStartPos;
                     MoveCamera(dragSpeed * Time.deltaTime * new Vector3(-delta.x, -delta.y, 0));
                     touchStartPos = touch.position;
                     break;
@@ -57,7 +58,7 @@ public class CameraMove : MonoBehaviour
     }
     private void MoveCamera(Vector3 movement)
     {
-        Vector3 newPosition = transform.position + movement;
+        var newPosition = transform.position + movement;
         newPosition.z = offset.z; // 保持z轴不变
         transform.position = Vector3.Lerp(transform.position, newPosition, smoothSpeed);
     }
