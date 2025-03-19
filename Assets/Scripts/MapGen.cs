@@ -10,7 +10,6 @@ public class MapGen : MonoBehaviour
     public int height; // 地图高度
     public Map map; // 生成的地图
     public Tilemap tilemap; // 绑定的Tilemap组件
-    public int[][] passMap;
     
 
     private GameObject _camera;
@@ -33,14 +32,4 @@ public class MapGen : MonoBehaviour
         map.SpawnNPC(assetDatabaseLoader.LittleBJY, gameTime);
         _camera.GetComponent<CameraMove>().MoveTo(player.GetComponent<Capability>().cellPosition, tilemap);
     }
-
-
-
-    
-
-    
-
-    
-
-    
 }

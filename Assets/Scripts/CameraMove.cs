@@ -30,7 +30,7 @@ public class CameraMove : MonoBehaviour
         var position = targetPos + offset; // 计算目标位置
         // var smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed); // 平滑移动
         transform.position = position; // 更新摄像头位置
-        Utils.Log($"摄像机移动至 {position}");
+        Utils.Print($"摄像机移动至 {position}");
     }
     public void MoveTo(Vector3Int targetPos, Tilemap tilemap)
     {

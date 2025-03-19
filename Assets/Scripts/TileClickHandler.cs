@@ -86,7 +86,7 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
 
         // 设置UI内容
         coordText.text = $"坐标：{cellPos}";
-        tileTypeText.text = $"瓦片类型：{tilemap.GetTile(cellPos)?.name ?? "null"} {mapGen.passMap[cellPos.x][cellPos.y]}";
+        tileTypeText.text = $"瓦片类型：{tilemap.GetTile(cellPos)?.name ?? "null"} {mapGen.map.passMap[cellPos.x][cellPos.y]}";
 
         // 设置按钮事件
         closeButton.onClick.AddListener(() => Destroy(currentPanel));
@@ -108,7 +108,7 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
         Tuple<int, int> start = new(capability.cellPosition.x, capability.cellPosition.y);
         Tuple<int, int> end = new(cellPos.x, cellPos.y);
         Debug.Log($"正在寻路：从 {start} 到 {end}");
-        var path = AStarPathfinding.AStar(mapGen.passMap, start, end);
+        var path = AStarPathfinding.AStar(mapGen.map.passMap, start, end);
         if (path.Count == 0)
         {
             Debug.Log("无法到达");
@@ -126,9 +126,12 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
             if (isPathfinding)
             {
                 Debug.Log($"移动到：{p}");
-                mapGen.passMap[p.Item1][p.Item2] = 1;
-                mapGen.passMap[capability.cellPosition.x][capability.cellPosition.y] = 0;
-                capability.cellPosition = new Vector3Int(p.Item1, p.Item2, 0);
+                mapGen.map.passMap[p.Item1][p.Item2] = 1;
+                mapGen.map.passMap[capability.cellPosition.x][capability.cellPosition.y] = 0;
+                // capability.cellPosition = new Vector3Int(p.Item1, p.Item2, 0);
+                var vectorDirection =
+                    Actions.VectorDirection(capability.cellPosition, new Vector3Int(p.Item1, p.Item2, 0));
+                Actions.Move(player, mapGen.map, vectorDirection);
 
                 yield return new WaitForSeconds(0.5f); // 等待
 

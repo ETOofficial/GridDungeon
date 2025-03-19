@@ -12,8 +12,8 @@ public class Map
     public int width;
     public int[][] passMap; // 通用passMap，理应不同实体不同
     
-    private AssetDatabaseLoader _assetDatabase; // 资源加载器
-    private Tilemap _tilemap;
+    private readonly AssetDatabaseLoader _assetDatabase; // 资源加载器
+    private readonly Tilemap _tilemap;
 
     public Map(int layer, int height, int width, Tilemap tilemap, AssetDatabaseLoader loader)
     {
@@ -28,7 +28,7 @@ public class Map
     public void GenerateMap()
     {
         // 初始化列表
-        Utils.Log("正在初始化地图……");
+        Utils.Print("正在初始化地图……");
         for (var x = 0; x < width; x++)
         {
             List<NBTTile> row = new();
@@ -41,7 +41,7 @@ public class Map
         }
 
         // 生成地图
-        Utils.Log("正在生成地图……");
+        Utils.Print("正在生成地图……");
         for (var x = 0; x < width; x++)
         {
             for (var y = 0; y < height; y++)
@@ -76,13 +76,13 @@ public class Map
                 }
             }
         }
-        Utils.Log("地图生成完毕！");
+        Utils.Print("地图生成完毕！");
     }
 
     public void DrawMap()
     {
         // 绘制地图
-        Utils.Log("正在绘制地图……");
+        Utils.Print("正在绘制地图……");
         for (var x = 0; x < width; x++)
         {
             for (var y = 0; y < height; y++)
@@ -91,7 +91,7 @@ public class Map
                 _tilemap.SetTile(tilePos, map[x][y].tile);
             }
         }
-        Utils.Log("地图绘制完毕！");
+        Utils.Print("地图绘制完毕！");
     }
     
     public void GeneratePassMap()
@@ -143,8 +143,16 @@ public class Map
         {
             Vector3Int pos = new(Random.Range(1, width), Random.Range(1, height));
             if (passMap[pos.x][pos.y] != 0) continue; 
-            Utils.Log($"随机坐标：{pos}");
+            Utils.Print($"随机坐标：{pos}");
             return pos;
         }
     }
+}
+
+public enum Direction
+{
+    Up,
+    Down,
+    Left,
+    Right
 }

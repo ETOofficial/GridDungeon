@@ -54,6 +54,6 @@ public class GameTime : MonoBehaviour
             // TODO 执行动作
             now = earliest;
         }
-        Utils.Log($"当前刻度： {now}");
+        Utils.Print($"当前刻度： {now}");
     }
 }
