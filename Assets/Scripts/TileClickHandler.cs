@@ -57,7 +57,7 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
         // 检查该位置是否有瓦片
         if (tilemap.HasTile(cellPos))
         {
-            Debug.Log($"点击了格子：{cellPos}\n瓦片类型：{tilemap.GetTile(cellPos)?.name ?? "null"} {mapGen.passMap[cellPos.x][cellPos.y]}");
+            Debug.Log($"点击了格子：{cellPos}\n瓦片类型：{tilemap.GetTile(cellPos)?.name ?? "null"} {mapGen.map.passMap[cellPos.x][cellPos.y]}");
 
             // 调用其他逻辑（例如触发宝箱、战斗等）
             ShowTileSelectUI(cellPos);
