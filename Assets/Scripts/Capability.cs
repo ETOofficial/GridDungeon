@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,44 +6,52 @@ using UnityEngine.Tilemaps;
 
 public class Capability : MonoBehaviour
 {
-    // public Grid Grid;
     public Tilemap tilemap;
     public Vector3Int cellPosition;
-    [Header("人物属性")]
+
+    [Header("人物属性")] public new string name = "Unnamed";
+    public Attitude attitude; // 态度
     public float health;
-    public float reactionSpeed; // 反应速度
+    public float reactionSpeed = 1f; // 反应速度
 
     public float nextActionTime; // 下次行动的时间
-    private GameTime gameTime;
+    // private GameTime _gameTime;
 
-    [Header("平滑移动")]
-    public float smoothSpeed = 0.125f; // 平滑移动速度
+    [Header("平滑移动")] public float smoothSpeed = 0.125f; // 平滑移动速度
 
-    
-    void Start()
+
+    public void Start()
     {
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
-        gameTime = GameObject.Find("GameTime").GetComponent<GameTime>();
-        Vector3 worldPos = tilemap.GetCellCenterWorld(cellPosition);
-        transform.position = worldPos; // 更新位置
-        nextActionTime = reactionSpeed;
+        // _gameTime = GameObject.Find("GameTime").GetComponent<GameTime>();
         
+        var worldPos = tilemap.GetCellCenterWorld(cellPosition);
+        transform.position = worldPos; // 更新位置
+        // SetNextActionTime(1f,_gameTime); // 默认下次行动的时间
     }
-    void FixedUpdate()
+
+    public void FixedUpdate()
     {
-        // // 动态坐标转换
-        // Vector3Int currentCell = tilemap.WorldToCell(transform.position);
         // 转换为该单元格中心的世界坐标
-        Vector3 worldPos = tilemap.GetCellCenterWorld(cellPosition);
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, worldPos, smoothSpeed); // 平滑移动
+        var worldPos = tilemap.GetCellCenterWorld(cellPosition);
+        var smoothedPosition = Vector3.Lerp(transform.position, worldPos, smoothSpeed); // 平滑移动
         transform.position = smoothedPosition; // 更新位置
     }
-    void Update()
+    
+    /// <param name="standardCostTime">标准消耗时间</param>
+    public void SetNextActionTime(float standardCostTime, GameTime gameTime)
     {
-        float now = gameTime.Now();
-        if (now >= nextActionTime)
-        {
-            nextActionTime += reactionSpeed;
-        }
+        if (reactionSpeed <= 0f) return; 
+        var costTime = standardCostTime / reactionSpeed;
+        nextActionTime = gameTime.now + costTime;
+        Utils.Print($"{name} 下次行动的时间被设为 {nextActionTime}");
     }
+}
+
+public enum Attitude
+{
+    Player, // 玩家
+    Friendly, // 友好
+    Neutral, // 中立
+    Hostile // 敌对
 }

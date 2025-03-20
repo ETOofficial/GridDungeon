@@ -1,17 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine.Tilemaps;
 
 public class NBTTile
 {
     public TileBase tile;
     public Dictionary<string, object> nbt;
-
-    public void SetTile(TileBase tile)
-    {
-        this.tile = tile;
-    }
 
     public void AddNBT(string key, object value)
     {

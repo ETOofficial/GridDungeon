@@ -5,9 +5,9 @@ public class AStarPathfinding
 {
     public static List<Tuple<int, int>> AStar(int[][] grid, Tuple<int, int> start, Tuple<int, int> end)
     {
-        int rows = grid.Length;
+        var rows = grid.Length;
         if (rows == 0) return new List<Tuple<int, int>>();
-        int cols = grid[0].Length;
+        var cols = grid[0].Length;
 
         // 方向数组：上，下，左，右
         var directions = new Tuple<int, int>[4]
@@ -48,7 +48,7 @@ public class AStarPathfinding
                 if (!IsValidCoordinate(neighbor, rows, cols)) continue;
                 if (grid[neighbor.Item1][neighbor.Item2] == 1) continue;
 
-                int tentativeG = gScore.GetValueOrDefault(current, int.MaxValue) + 1;
+                var tentativeG = gScore.GetValueOrDefault(current, int.MaxValue) + 1;
                 if (tentativeG < gScore.GetValueOrDefault(neighbor, int.MaxValue))
                 {
                     cameFrom[neighbor] = current;
@@ -99,10 +99,10 @@ public class PriorityQueue<TElement, TPriority> where TPriority : IComparable<TP
     public void Enqueue(TElement element, TPriority priority)
     {
         _elements.Add((element, priority));
-        int ci = _elements.Count - 1;
+        var ci = _elements.Count - 1;
         while (ci > 0)
         {
-            int pi = (ci - 1) / 2;
+            var pi = (ci - 1) / 2;
             if (_elements[ci].Priority.CompareTo(_elements[pi].Priority) >= 0) break;
             (_elements[ci], _elements[pi]) = (_elements[pi], _elements[ci]);
             ci = pi;
@@ -116,12 +116,12 @@ public class PriorityQueue<TElement, TPriority> where TPriority : IComparable<TP
         _elements[0] = _elements[last];
         _elements.RemoveAt(last);
 
-        int pi = 0;
+        var pi = 0;
         while (true)
         {
-            int ci = pi * 2 + 1;
+            var ci = pi * 2 + 1;
             if (ci >= _elements.Count) break;
-            int rc = ci + 1;
+            var rc = ci + 1;
             if (rc < _elements.Count && 
                 _elements[rc].Priority.CompareTo(_elements[ci].Priority) < 0)
                 ci = rc;

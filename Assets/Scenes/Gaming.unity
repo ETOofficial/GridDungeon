@@ -123,6 +123,55 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &105774549
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 105774550}
+  - component: {fileID: 105774551}
+  m_Layer: 0
+  m_Name: AssetDatabaseLoader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &105774550
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 105774549}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.354311, y: 0.07546186, z: -9.88759}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &105774551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 105774549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 476db2c7bda145f49956716ed3b6aa45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LittleBJY: {fileID: 0}
+  Stickman: {fileID: 0}
+  groundTile: {fileID: 0}
+  wallTile: {fileID: 0}
+  woodenBoxTile: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -307,13 +356,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73405ba77cec4f44281cfa2d3e655a6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 4089107616398870730, guid: 812129bf5bd9d2a4598f0eab98df4864, type: 3}
-  width: 50
-  height: 50
+  player: {fileID: 0}
+  width: 10
+  height: 10
   tilemap: {fileID: 1989026952}
-  groundTile: {fileID: 11400000, guid: 263b078e88d87ae4086a65354b7ea70b, type: 2}
-  wallTile: {fileID: 11400000, guid: d139a6d5d4a0b1c4aaa6cad64be82ed6, type: 2}
-  woodenBoxTile: {fileID: 11400000, guid: e2f7fe9bd9db41649bf91b46467f722e, type: 2}
 --- !u!1 &1989026951
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,6 +579,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pause: 0
+  allCharacters: []
 --- !u!1 &2115657085
 GameObject:
   m_ObjectHideFlags: 0
@@ -609,3 +656,4 @@ SceneRoots:
   - {fileID: 2115657088}
   - {fileID: 2109768078}
   - {fileID: 519420032}
+  - {fileID: 105774550}
