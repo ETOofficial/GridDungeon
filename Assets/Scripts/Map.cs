@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 
-public class Map: MonoBehaviour
+public class Map
 {
     public List<List<NBTTile>> map;
     public int layer; // 层数
@@ -113,34 +113,7 @@ public class Map: MonoBehaviour
         }
     }
     
-    public GameObject SpawnPlayer(GameObject playerPrefab, GameTime gameTime)
-    {
-        var player = Instantiate(playerPrefab);
-        var capability = player.GetComponent<Capability>();
-        gameTime.allCharacters.Add(player); // 将player添加到游戏时间管理器中
-        capability.attitude = Attitude.Player;
-        capability.name = "Player";
-        var spawnPos = RandomCellPos();
-        capability.cellPosition = spawnPos;
-        passMap[spawnPos.x][spawnPos.y] = 1;
-        // __camera.GetComponent<CameraMove>().MoveTo(tilemap.GetCellCenterWorld(spawnPos));
-        return player;
-    }
     
-    
-    public GameObject SpawnNPC(GameObject NPCPrefab, GameTime gameTime)
-    {
-        var npc = Instantiate(NPCPrefab);
-        // if (npc == null) Debug.LogError("NPC生成失败");
-        var capability = npc.GetComponent<Capability>();
-        gameTime.allCharacters.Add(npc);
-        capability.attitude = Attitude.Neutral;
-        var spawnPos = RandomCellPos();
-        passMap[spawnPos.x][spawnPos.y] = 1;
-        capability.cellPosition = spawnPos;
-        capability.SetNextActionTime(1f, gameTime);
-        return npc;
-    }
     
     /// <summary>
     /// 随机生成一个可通行的坐标
