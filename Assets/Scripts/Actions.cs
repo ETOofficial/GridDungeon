@@ -48,7 +48,8 @@ public static class Actions
     public static void RandomMove(GameObject obj, Map map)
     {
         var randomDirection = RandomDirection();
-        Move(obj, map, randomDirection);
+        Capability capability = obj.GetComponent<Capability>();
+        if (map.passMap[capability.cellPosition.x + randomDirection.x][capability.cellPosition.y + randomDirection.y] == 0) Move(obj, map, randomDirection);
     }
 
     public static Vector3Int RandomDirection()
