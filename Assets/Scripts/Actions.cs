@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -45,13 +43,22 @@ public static class Actions
         return cellPos.x < 0 || cellPos.x >= map.width || cellPos.y < 0 || cellPos.y >= map.height;
     }
 
+    /// <summary>
+    /// 随机移动
+    /// </summary>
+    /// <param name="obj">要移动的对象</param>
+    /// <param name="map">地图</param>
     public static void RandomMove(GameObject obj, Map map)
     {
         var randomDirection = RandomDirection();
-        Capability capability = obj.GetComponent<Capability>();
+        var capability = obj.GetComponent<Capability>();
         if (map.passMap[capability.cellPosition.x + randomDirection.x][capability.cellPosition.y + randomDirection.y] == 0) Move(obj, map, randomDirection);
     }
 
+    /// <summary>
+    /// 随机方向向量
+    /// </summary>
+    /// <returns>方向向量</returns>
     public static Vector3Int RandomDirection()
     {
         var randint = Random.Range(0, 4);
@@ -61,7 +68,6 @@ public static class Actions
             1 => Vector3Int.down,
             2 => Vector3Int.left,
             3 => Vector3Int.right,
-            _ => throw new IndexOutOfRangeException("随机方向出错")
         };
     }
 }

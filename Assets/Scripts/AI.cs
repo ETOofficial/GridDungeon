@@ -1,11 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
-using Random = System.Random;
 
 public class AI
 {
+    /// <summary>
+    /// NPC行动
+    /// </summary>
+    /// <param name="ActionCharacters">需要行动的NPC</param>
+    /// <param name="gameTime">游戏时间</param>
+    /// <param name="map">地图</param>
     public static void NPCAct(List<GameObject> ActionCharacters, GameTime gameTime, Map map)
     {
         Utils.Print("开始执行NPC行动");
@@ -24,12 +27,23 @@ public class AI
         Utils.Print("NPC行动结束");
     }
 
+    /// <summary>
+    /// 玩家行动
+    /// </summary>
+    /// <param name="gameTime">游戏时间</param>
+    /// <param name="map">地图</param>
     public static void NPCAct(GameTime gameTime, Map map)
     {
         var actionCharacters = gameTime.allCharacters;
         NPCAct(actionCharacters, gameTime, map);
     }
 
+    /// <summary>
+    /// 获取最早行动的NPC
+    /// </summary>
+    /// <param name="ActionCharacters">需要行动的NPC</param>
+    /// <param name="gameTime">游戏时间</param>
+    /// <returns>最早行动的NPC</returns>
     public static GameObject EarliestActCharacter(List<GameObject> ActionCharacters, GameTime gameTime)
     {
         if (ActionCharacters.Count == 0) return null;

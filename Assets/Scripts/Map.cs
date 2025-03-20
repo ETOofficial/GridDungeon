@@ -142,6 +142,10 @@ public class Map: MonoBehaviour
         return npc;
     }
     
+    /// <summary>
+    /// 随机生成一个可通行的坐标
+    /// </summary>
+    /// <returns>坐标</returns>
     public Vector3Int RandomCellPos()
     {
         while (true)

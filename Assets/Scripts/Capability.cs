@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -38,7 +35,11 @@ public class Capability : MonoBehaviour
         transform.position = smoothedPosition; // 更新位置
     }
     
+    /// <summary>
+    /// 设置下次行动的时间
+    /// </summary>
     /// <param name="standardCostTime">标准消耗时间</param>
+    /// <param name="gameTime">游戏时间</param>
     public void SetNextActionTime(float standardCostTime, GameTime gameTime)
     {
         if (reactionSpeed <= 0f) return; 

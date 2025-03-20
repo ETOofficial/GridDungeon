@@ -25,6 +25,10 @@ public class CameraMove : MonoBehaviour
         // transform.position.z = offset.z;
     }
 
+    /// <summary>
+    /// 移动到指定位置
+    /// </summary>
+    /// <param name="targetPos">目标位置</param>
     public void MoveTo(Vector3 targetPos)
     {
         var position = targetPos + offset; // 计算目标位置
@@ -32,6 +36,12 @@ public class CameraMove : MonoBehaviour
         transform.position = position; // 更新摄像头位置
         Utils.Print($"摄像机移动至 {position}");
     }
+    
+    /// <summary>
+    /// 移动到指定位置（瓦片坐标）
+    /// </summary>
+    /// <param name="targetPos">目标位置</param>
+    /// <param name="tilemap">瓦片地图</param>
     public void MoveTo(Vector3Int targetPos, Tilemap tilemap)
     {
         var position = tilemap.GetCellCenterWorld(targetPos);
