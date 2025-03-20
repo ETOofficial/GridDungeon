@@ -11,7 +11,7 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
 {
     [Header("引用")]
     public Grid Grid;
-    private Tilemap tilemap;
+    private Tilemap _tilemap;
     public GameObject tileInfoPanelPrefab; // UI预制体
     public Vector2 clickWorldPos; // 世界坐标
     public Vector3Int cellPos; // 单元格坐标
@@ -20,7 +20,7 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
     private GameObject currentPanel; // 当前显示的UI实例
     private GameObject player;
     private MapGen mapGen;
-    private GameTime gameTime;
+    private GameTime _gameTime;
     private bool isPathfinding = false;
 
     // UI组件引用
@@ -32,13 +32,12 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
 
     public void Start()
     {
-        player = FindObjectOfType<MapGen>().player;
-        gameTime = FindObjectOfType<GameTime>();
+        _gameTime = FindObjectOfType<GameTime>();
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        tilemap = Grid.transform.Find("Tilemap").GetComponent<Tilemap>();
+        _tilemap = Grid.transform.Find("Tilemap").GetComponent<Tilemap>();
         // 获取MapGen组件引用
         mapGen = FindObjectOfType<MapGen>();
 
@@ -52,12 +51,12 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
         clickWorldPos = Camera.main.ScreenToWorldPoint(eventData.position);
 
         // 获取点击的单元格坐标
-        cellPos = tilemap.WorldToCell(clickWorldPos);
+        cellPos = _tilemap.WorldToCell(clickWorldPos);
 
         // 检查该位置是否有瓦片
-        if (tilemap.HasTile(cellPos))
+        if (_tilemap.HasTile(cellPos))
         {
-            Debug.Log($"点击了格子：{cellPos}\n瓦片类型：{tilemap.GetTile(cellPos)?.name ?? "null"} {mapGen.map.passMap[cellPos.x][cellPos.y]}");
+            Utils.Print($"点击了格子：{cellPos}\n瓦片类型：{_tilemap.GetTile(cellPos)?.name ?? "null"} {mapGen.map.passMap[cellPos.x][cellPos.y]}");
 
             // 调用其他逻辑（例如触发宝箱、战斗等）
             ShowTileSelectUI(cellPos);
@@ -86,7 +85,7 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
 
         // 设置UI内容
         coordText.text = $"坐标：{cellPos}";
-        tileTypeText.text = $"瓦片类型：{tilemap.GetTile(cellPos)?.name ?? "null"} {mapGen.map.passMap[cellPos.x][cellPos.y]}";
+        tileTypeText.text = $"瓦片类型：{_tilemap.GetTile(cellPos)?.name ?? "null"} {mapGen.map.passMap[cellPos.x][cellPos.y]}";
 
         // 设置按钮事件
         closeButton.onClick.AddListener(() => Destroy(currentPanel));
@@ -101,10 +100,12 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
             isPathfinding = false;
             return;
         }
-        player.GetComponent<Capability>().SetNextActionTime(1f); // 设置下一次行动时间，也就是本次行动结束时间
+        player = FindObjectOfType<MapGen>().player;
+        var capability = player.GetComponent<Capability>();
+        if (capability == null) Debug.LogError("找不到玩家");
+        capability.SetNextActionTime(1f, _gameTime); // 设置下一次行动时间
         isPathfinding = true;
         pathfindingButtonText.text = "停止寻路";
-        var capability = player.GetComponent<Capability>();
         Tuple<int, int> start = new(capability.cellPosition.x, capability.cellPosition.y);
         Tuple<int, int> end = new(cellPos.x, cellPos.y);
         Debug.Log($"正在寻路：从 {start} 到 {end}");
@@ -125,21 +126,31 @@ public class TileClickHandler : MonoBehaviour, IPointerClickHandler
         {
             if (isPathfinding)
             {
-                Debug.Log($"移动到：{p}");
+                Utils.Print($"移动到：{p}");
                 mapGen.map.passMap[p.Item1][p.Item2] = 1;
                 mapGen.map.passMap[capability.cellPosition.x][capability.cellPosition.y] = 0;
-                // capability.cellPosition = new Vector3Int(p.Item1, p.Item2, 0);
+                
+                // 先执行先于玩家的NPC行动
+                AI.NPCAct(_gameTime, mapGen.map);
+                
+                // 执行玩家行动
+                capability.SetNextActionTime(1f, _gameTime);
+                Utils.Print($"{capability.name} 开始行动\n开始时间： {_gameTime.now}\n结束时间：{capability.nextActionTime}");
                 var vectorDirection =
                     Actions.VectorDirection(capability.cellPosition, new Vector3Int(p.Item1, p.Item2, 0));
-                Actions.Move(player, mapGen.map, vectorDirection);
-
+                var moveSuccess = Actions.Move(player, mapGen.map, vectorDirection);
+                if (!moveSuccess)
+                {
+                    isPathfinding = false;
+                }
+                _gameTime.now = capability.nextActionTime; // 更新时间
+                Utils.Print($"{capability.name} 结束行动\n结束时间：{capability.nextActionTime}\n当前时间：{_gameTime.now}");
+                
                 yield return new WaitForSeconds(0.5f); // 等待
-
-                gameTime.NPCAct();
             }
             else
             {
-                Debug.Log("寻路中止");
+                Utils.Print("寻路中止");
             }
             
         }

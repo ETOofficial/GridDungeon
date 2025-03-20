@@ -99,8 +99,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilemap: {fileID: 0}
   cellPosition: {x: 0, y: 0, z: 0}
-  attitude: 
+  name: Unnamed
+  attitude: 0
   health: 0
-  reactionSpeed: 1
+  reactionSpeed: 0.5
   nextActionTime: 0
   smoothSpeed: 0.125

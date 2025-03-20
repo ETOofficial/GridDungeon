@@ -1,10 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 
-public class Map
+public class Map: MonoBehaviour
 {
     public List<List<NBTTile>> map;
     public int layer; // 层数
@@ -116,25 +115,31 @@ public class Map
     
     public GameObject SpawnPlayer(GameObject playerPrefab, GameTime gameTime)
     {
-        var player = GameObject.Instantiate(playerPrefab);
+        var player = Instantiate(playerPrefab);
+        var capability = player.GetComponent<Capability>();
         gameTime.allCharacters.Add(player); // 将player添加到游戏时间管理器中
-        player.GetComponent<Capability>().attitude = Attitude.Player;
+        capability.attitude = Attitude.Player;
+        capability.name = "Player";
         var spawnPos = RandomCellPos();
-        player.GetComponent<Capability>().cellPosition = spawnPos;
+        capability.cellPosition = spawnPos;
         passMap[spawnPos.x][spawnPos.y] = 1;
         // __camera.GetComponent<CameraMove>().MoveTo(tilemap.GetCellCenterWorld(spawnPos));
         return player;
     }
     
     
-    public void SpawnNPC(GameObject NPCPrefab, GameTime gameTime)
+    public GameObject SpawnNPC(GameObject NPCPrefab, GameTime gameTime)
     {
-        var npc = GameObject.Instantiate(NPCPrefab);
+        var npc = Instantiate(NPCPrefab);
+        // if (npc == null) Debug.LogError("NPC生成失败");
+        var capability = npc.GetComponent<Capability>();
         gameTime.allCharacters.Add(npc);
-        npc.GetComponent<Capability>().attitude = Attitude.Hostile;
+        capability.attitude = Attitude.Neutral;
         var spawnPos = RandomCellPos();
         passMap[spawnPos.x][spawnPos.y] = 1;
-        npc.GetComponent<Capability>().cellPosition = spawnPos;
+        capability.cellPosition = spawnPos;
+        capability.SetNextActionTime(1f, gameTime);
+        return npc;
     }
     
     public Vector3Int RandomCellPos()
