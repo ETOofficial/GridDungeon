@@ -278,10 +278,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f4ad06bb03cdbb46aed4407d7ad5c49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camera: {fileID: 519420031}
   player: {fileID: 0}
   smoothSpeed: 0.125
   offset: {x: 0, y: 0, z: -10}
-  dragSpeed: 0.5
+  dragSpeed: 1
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,7 +360,6 @@ MonoBehaviour:
   player: {fileID: 0}
   width: 10
   height: 10
-  map: {fileID: 0}
   tilemap: {fileID: 1989026952}
 --- !u!1 &1989026951
 GameObject:
@@ -535,6 +535,7 @@ MonoBehaviour:
   tileInfoPanelPrefab: {fileID: 3110116634325420016, guid: 5e3367b360343034b930ae9d64587e39, type: 3}
   clickWorldPos: {x: 0, y: 0}
   cellPos: {x: 0, y: 0, z: 0}
+  currentPanel: {fileID: 0}
 --- !u!1 &2109768077
 GameObject:
   m_ObjectHideFlags: 0

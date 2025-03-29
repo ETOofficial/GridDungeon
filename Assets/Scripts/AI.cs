@@ -18,7 +18,7 @@ public class AI
             var capability = nextActor.GetComponent<Capability>();
             if (capability.attitude == Attitude.Player) break;
             // 执行NPC行动
-            capability.SetNextActionTime(1f, gameTime);
+            capability.SetNextActionTime(1f, gameTime); // 设置行动时间
             Utils.Print($"{capability.name} 开始行动\n开始时间： {gameTime.now}");
             Actions.RandomMove(nextActor, map);
             gameTime.now = capability.nextActionTime; // 更新时间
@@ -28,7 +28,7 @@ public class AI
     }
 
     /// <summary>
-    /// 玩家行动
+    /// NPC行动（所有NPC）
     /// </summary>
     /// <param name="gameTime">游戏时间</param>
     /// <param name="map">地图</param>
@@ -66,4 +66,17 @@ public class AI
         }
         return nextActor;
     }
+
+    public static void Attack(GameObject obj, GameObject tarObj, int atkLen = 1)
+    {
+        var cap = obj.GetComponent<Capability>();
+        var tarCap = tarObj.GetComponent<Capability>();
+        if (atkLen >= Utils.TileLen(cap.cellPosition, tarCap.cellPosition))
+        {
+            
+        }
+        
+    }
+    
+    
 }

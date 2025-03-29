@@ -10,8 +10,8 @@ public class Capability : MonoBehaviour
     public Attitude attitude; // 态度
     public float health;
     public float reactionSpeed = 1f; // 反应速度
-
     public float nextActionTime; // 下次行动的时间
+    public bool isPathfinding = false;
     // private GameTime _gameTime;
 
     [Header("平滑移动")] public float smoothSpeed = 0.125f; // 平滑移动速度
