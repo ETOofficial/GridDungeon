@@ -12,4 +12,9 @@ public static class Utils
         Debug.Log(msg);
 #endif
     }
+
+    public static int TileLen(Vector3Int start, Vector3Int end)
+    {
+        return Mathf.Abs(start.x - end.x) + Mathf.Abs(start.y - end.y);
+    }
 }

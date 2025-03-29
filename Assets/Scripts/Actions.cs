@@ -52,7 +52,8 @@ public static class Actions
     {
         var randomDirection = RandomDirection();
         var capability = obj.GetComponent<Capability>();
-        if (map.passMap[capability.cellPosition.x + randomDirection.x][capability.cellPosition.y + randomDirection.y] == 0) Move(obj, map, randomDirection);
+        if (map.passMap[capability.cellPosition.x + randomDirection.x][capability.cellPosition.y + randomDirection.y] ==
+            0) Move(obj, map, randomDirection);
     }
 
     /// <summary>

@@ -3,20 +3,22 @@ using UnityEngine.Tilemaps;
 
 public class CameraMove : MonoBehaviour
 {
+    public Camera camera;
     public GameObject player; // 角色的Transform
     public float smoothSpeed = 0.125f; // 平滑移动速度
     public Vector3 offset = new(0, 0, -10); // 摄像头与角色之间的偏移量
-    public float dragSpeed = 0.5f; // 滑动速度系数
+    public float dragSpeed = 1f; // 滑动速度系数
 
     private Vector2 touchStartPos;
     private bool isDragging = false;
 
     private void Start()
     {
+        // camera = GetComponent<Camera>();
         player = FindObjectOfType<MapGen>().player; // 通过标签查找玩家
-        if (player == null) return;
-        var desiredPosition = player.transform.position + offset; // 计算目标位置
-        transform.position = desiredPosition;
+        // if (player == null) return;
+        // var desiredPosition = player.transform.position + offset; // 计算目标位置
+        // transform.position = desiredPosition;
     }
 
     public void Update()
@@ -45,7 +47,7 @@ public class CameraMove : MonoBehaviour
     public void MoveTo(Vector3Int targetPos, Tilemap tilemap)
     {
         var position = tilemap.GetCellCenterWorld(targetPos);
-        MoveTo(position);
+        transform.position = position + offset;
     }
 
     private void HandleTouchInput()
