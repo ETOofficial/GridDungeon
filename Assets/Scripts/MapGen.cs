@@ -28,35 +28,20 @@ public class MapGen : MonoBehaviour
         map.GenerateMap();
         map.GeneratePassMap();
         map.DrawMap();
-        SpawnPlayer(playerPrefab, _gameTime);
-        SpawnNPC(_assetDatabaseLoader.LittleBJY, _gameTime);
+        SpawnCharacter(playerPrefab, _gameTime, Attitude.Player, "Player");
+        SpawnCharacter(_assetDatabaseLoader.LittleBJY, _gameTime, Attitude.Hostile, "bjy");
         _camera.GetComponent<CameraMove>().MoveTo(player.GetComponent<Capability>().cellPosition, tilemap);
     }
     
-    public void SpawnPlayer(GameObject playerPrefab, GameTime gameTime)
+    public void SpawnCharacter(GameObject prefab, GameTime gameTime, Attitude attitude, string name)
     {
-        player = Instantiate(playerPrefab);
-        var capability = player.GetComponent<Capability>();
-        gameTime.allCharacters.Add(player); // 将player添加到游戏时间管理器中
-        capability.attitude = Attitude.Player;
-        capability.name = "Player";
-        var spawnPos = map.RandomCellPos();
-        capability.cellPosition = spawnPos;
-        map.passMap[spawnPos.x][spawnPos.y] = 1;
-        // __camera.GetComponent<CameraMove>().MoveTo(tilemap.GetCellCenterWorld(spawnPos));
-    }
-    
-    
-    public void SpawnNPC(GameObject NPCPrefab, GameTime gameTime)
-    {
-        var npc = Instantiate(NPCPrefab);
-        // if (npc == null) Debug.LogError("NPC生成失败");
-        var capability = npc.GetComponent<Capability>();
+        var npc = Instantiate(prefab);
+        var cap = npc.GetComponent<Capability>();
         gameTime.allCharacters.Add(npc);
-        capability.attitude = Attitude.Neutral;
+        cap.name = name;
+        cap.attitude = attitude;
         var spawnPos = map.RandomCellPos();
         map.passMap[spawnPos.x][spawnPos.y] = 1;
-        capability.cellPosition = spawnPos;
-        capability.SetNextActionTime(1f, gameTime);
+        cap.cellPosition = spawnPos;
     }
 }
