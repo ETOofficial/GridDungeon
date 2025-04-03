@@ -15,15 +15,16 @@ public class AI
         while (true)
         {
             var nextActor = EarliestActCharacter(ActionCharacters, gameTime);
-            var capability = nextActor.GetComponent<Capability>();
-            if (capability.attitude == Attitude.Player) break;
+            var cap = nextActor.GetComponent<Capability>();
+            if (cap.attitude == Attitude.Player) break;
             // 执行NPC行动
-            capability.SetNextActionTime(1f, gameTime); // 设置行动时间
-            Utils.Print($"{capability.name} 开始行动\n开始时间： {gameTime.now}");
+            cap.SetNextActionTime(1f, gameTime); // 设置行动时间
+            Utils.Print($"{cap.name} 开始行动\n开始时间： {gameTime.Get()}");
             Actions.RandomMove(nextActor, map);
-            gameTime.now = capability.nextActionTime; // 更新时间
-            Utils.Print($"{capability.name} 结束行动\n结束时间： {gameTime.now}\n当前时间：{gameTime.now}");
+            gameTime.Set(cap.nextActionTime); // 更新时间
+            Utils.Print($"{cap.name} 结束行动\n结束时间： {gameTime.Get()}\n当前时间：{gameTime.Get()}");
         }
+
         Utils.Print("NPC行动结束");
     }
 
@@ -59,11 +60,18 @@ public class AI
             }
         }
 
-        if (earliestActTime < gameTime.now)
-        {
-            Debug.LogError($"行动时间错误\n错误对象名称：{nextActor.name}\n错误原因：行动时间早于当前时间");
-            // throw new Exception($"行动时间错误\n错误对象名称：{nextActor.name}\n错误原因：行动时间早于当前时间");
-        }
+        // 以下错误判断可能方法有误
+        // if (earliestActTime < gameTime.Get())
+        // {
+        //     Debug.LogError(
+        //         "行动时间错误\n" +
+        //         $"错误对象名称：{nextActor.name}\n" +
+        //         "错误原因：行动时间早于当前时间\n" +
+        //         $"行动时间：{earliestActTime}\n" +
+        //         $"当前时间：{gameTime.Get()}");
+        //     // throw new Exception($"行动时间错误\n错误对象名称：{nextActor.name}\n错误原因：行动时间早于当前时间");
+        // }
+
         return nextActor;
     }
 
@@ -73,10 +81,6 @@ public class AI
         var tarCap = tarObj.GetComponent<Capability>();
         if (atkLen >= Utils.TileLen(cap.cellPosition, tarCap.cellPosition))
         {
-            
         }
-        
     }
-    
-    
 }

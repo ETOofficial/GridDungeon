@@ -14,6 +14,16 @@ public class Map
     private readonly AssetDatabaseLoader _assetDatabase; // 资源加载器
     private readonly Tilemap _tilemap;
 
+    public void SetPassMap(int[][] pMap)
+    {
+        passMap = pMap;
+    }
+
+    public void SetPassMap(int x, int y, int value)
+    {
+        passMap[x][y] = value;
+    }
+
     public Map(int layer, int height, int width, Tilemap tilemap, AssetDatabaseLoader loader)
     {
         this.layer = layer;
@@ -112,8 +122,6 @@ public class Map
             }
         }
     }
-    
-    
     
     /// <summary>
     /// 随机生成一个可通行的坐标

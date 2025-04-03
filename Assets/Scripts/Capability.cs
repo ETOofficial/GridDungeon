@@ -24,7 +24,7 @@ public class Capability : MonoBehaviour
         
         var worldPos = tilemap.GetCellCenterWorld(cellPosition);
         transform.position = worldPos; // 更新位置
-        // SetNextActionTime(1f,_gameTime); // 默认下次行动的时间
+        nextActionTime = 1f; // 默认下次行动的时间
     }
 
     public void FixedUpdate()
@@ -44,7 +44,7 @@ public class Capability : MonoBehaviour
     {
         if (reactionSpeed <= 0f) return; 
         var costTime = standardCostTime / reactionSpeed;
-        nextActionTime = gameTime.now + costTime;
+        nextActionTime = gameTime.Get() + costTime;
         Utils.Print($"{name} 下次行动的时间被设为 {nextActionTime}");
     }
 }

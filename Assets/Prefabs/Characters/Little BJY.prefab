@@ -102,6 +102,7 @@ MonoBehaviour:
   name: Unnamed
   attitude: 0
   health: 0
-  reactionSpeed: 0.5
+  reactionSpeed: 1
   nextActionTime: 0
+  isPathfinding: 0
   smoothSpeed: 0.125
