@@ -118,8 +118,6 @@ public static class Actions
             if (cap.isPathfinding)
             {
                 Utils.Print($"移动到：{p}");
-                map.passMap[p.Item1][p.Item2] += 1;
-                map.passMap[cap.cellPosition.x][cap.cellPosition.y] -= 1;
 
 
                 // 先执行先于玩家的NPC行动
@@ -128,8 +126,7 @@ public static class Actions
                 // 执行玩家行动
                 cap.SetNextActionTime(1f, gameTime);
                 Utils.Print($"{cap.name} 开始行动\n开始时间： {gameTime.Get()}\n结束时间：{cap.nextActionTime}");
-                var vectorDirection =
-                    VectorDirection(cap.cellPosition, new Vector3Int(p.Item1, p.Item2, 0));
+                var vectorDirection = VectorDirection(cap.cellPosition, new Vector3Int(p.Item1, p.Item2, 0));
                 var moveSuccess = Move(player, map, vectorDirection);
                 if (!moveSuccess)
                 {
