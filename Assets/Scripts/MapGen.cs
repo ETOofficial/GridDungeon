@@ -28,20 +28,21 @@ public class MapGen : MonoBehaviour
         map.GenerateMap();
         map.GeneratePassMap();
         map.DrawMap();
-        SpawnCharacter(playerPrefab, _gameTime, Attitude.Player, "Player");
+        player = SpawnCharacter(playerPrefab, _gameTime, Attitude.Player, "Player");
         SpawnCharacter(_assetDatabaseLoader.LittleBJY, _gameTime, Attitude.Hostile, "bjy");
         _camera.GetComponent<CameraMove>().MoveTo(player.GetComponent<Capability>().cellPosition, tilemap);
     }
     
-    public void SpawnCharacter(GameObject prefab, GameTime gameTime, Attitude attitude, string name)
+    public GameObject SpawnCharacter(GameObject prefab, GameTime gameTime, Attitude attitude, string name)
     {
-        var npc = Instantiate(prefab);
-        var cap = npc.GetComponent<Capability>();
-        gameTime.allCharacters.Add(npc);
+        var character = Instantiate(prefab);
+        var cap = character.GetComponent<Capability>();
+        gameTime.allCharacters.Add(character);
         cap.name = name;
         cap.attitude = attitude;
         var spawnPos = map.RandomCellPos();
         map.passMap[spawnPos.x][spawnPos.y] = 1;
         cap.cellPosition = spawnPos;
+        return character;
     }
 }

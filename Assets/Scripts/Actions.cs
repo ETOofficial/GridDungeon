@@ -16,12 +16,15 @@ public static class Actions
     /// <returns>是否成功移动</returns>
     public static bool Move(GameObject obj, Map map, Vector3Int vectorDirection)
     {
-        var capability = obj.GetComponent<Capability>();
-        var targetPos = capability.cellPosition + vectorDirection;
+        var cap = obj.GetComponent<Capability>();
+        var targetPos = cap.cellPosition + vectorDirection;
         // if (isOutOfMap(map, targetPos) || map.passMap[targetPos.x][targetPos.y] == 1) return false;
         if (isOutOfMap(map, targetPos)) return false;
         // TODO 可能触发机关等
-        capability.cellPosition += vectorDirection;
+        var tarPosition = cap.cellPosition + vectorDirection;
+        map.passMap[tarPosition.x][tarPosition.y] += 1;
+        map.passMap[cap.cellPosition.x][cap.cellPosition.y] -= 1;
+        cap.cellPosition = tarPosition;
         return true;
     }
 
@@ -96,7 +99,7 @@ public static class Actions
         Tuple<int, int> start = new(cap.cellPosition.x, cap.cellPosition.y);
         Tuple<int, int> end = new(cellPos.x, cellPos.y);
         Utils.Print($"正在寻路：从 {start} 到 {end}");
-        var path = AStarPathfinding.AStar(map.passMap, start, end);
+        var path = AStarPathfinding.AStar(map.passMap, start, end, cap.passLevel);
         if (path.Count == 0)
         {
             Utils.Print("无法到达");
@@ -115,8 +118,8 @@ public static class Actions
             if (cap.isPathfinding)
             {
                 Utils.Print($"移动到：{p}");
-                map.passMap[p.Item1][p.Item2] = 1;
-                map.passMap[cap.cellPosition.x][cap.cellPosition.y] = 0;
+                map.passMap[p.Item1][p.Item2] += 1;
+                map.passMap[cap.cellPosition.x][cap.cellPosition.y] -= 1;
 
 
                 // 先执行先于玩家的NPC行动

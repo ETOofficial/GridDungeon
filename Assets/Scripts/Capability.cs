@@ -10,9 +10,9 @@ public class Capability : MonoBehaviour
     public Attitude attitude; // 态度
     public float health;
     public float reactionSpeed = 1f; // 反应速度
-    public float nextActionTime; // 下次行动的时间
+    public float nextActionTime = 1f; // 下次行动的时间
     public bool isPathfinding = false;
-    // private GameTime _gameTime;
+    public int passLevel = 0;
 
     [Header("平滑移动")] public float smoothSpeed = 0.125f; // 平滑移动速度
 
@@ -20,11 +20,10 @@ public class Capability : MonoBehaviour
     public void Start()
     {
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
-        // _gameTime = GameObject.Find("GameTime").GetComponent<GameTime>();
         
         var worldPos = tilemap.GetCellCenterWorld(cellPosition);
         transform.position = worldPos; // 更新位置
-        nextActionTime = 1f; // 默认下次行动的时间
+        nextActionTime = reactionSpeed; // 默认下次行动的时间
     }
 
     public void FixedUpdate()

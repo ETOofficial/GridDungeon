@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class AStarPathfinding
 {
-    public static List<Tuple<int, int>> AStar(int[][] grid, Tuple<int, int> start, Tuple<int, int> end)
+    public static List<Tuple<int, int>> AStar(int[][] grid, Tuple<int, int> start, Tuple<int, int> end, int passLevel = 0)
     {
         var rows = grid.Length;
         if (rows == 0) return new List<Tuple<int, int>>();
@@ -46,7 +46,7 @@ public class AStarPathfinding
                 var neighbor = Tuple.Create(current.Item1 + dir.Item1, current.Item2 + dir.Item2);
 
                 if (!IsValidCoordinate(neighbor, rows, cols)) continue;
-                if (grid[neighbor.Item1][neighbor.Item2] == 1) continue;
+                if (grid[neighbor.Item1][neighbor.Item2] > passLevel) continue; // 如果障碍级别高于当前，则跳过
 
                 var tentativeG = gScore.GetValueOrDefault(current, int.MaxValue) + 1;
                 if (tentativeG < gScore.GetValueOrDefault(neighbor, int.MaxValue))
